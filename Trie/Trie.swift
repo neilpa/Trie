@@ -1,19 +1,14 @@
-//
-//  Trie.swift
-//  Trie
-//
-//  Created by Neil Pankey on 3/6/15.
 //  Copyright (c) 2015 Neil Pankey. All rights reserved.
-//
 
+/// A tree for effieciently storing keys and optional values where many keys share a prefix.
 public final class Trie<Key: ExtensibleCollectionType, Value where Key.Generator.Element: Hashable> {
-    private typealias Atom = Key.Generator.Element
+    // MARK: Constructors
 
-    private var value: Value? = nil
-    private var children: [Atom: Trie] = [:]
-
+    /// Constructs an empty `Trie`
     public init() {
     }
+
+    // MARK: Dictionary primitives
 
     public subscript(key: Key) -> Value? {
         get {
@@ -23,25 +18,34 @@ public final class Trie<Key: ExtensibleCollectionType, Value where Key.Generator
         }
     }
 
+    /// Updates `key` with `value` on the receiver. Returns the previous value of `key` or
+    /// `nil` if unset.
     public func updateValue(value: Value, forKey key: Key) -> Value? {
         return update(key, key.startIndex, value)
     }
 
+    /// Removes the value at `key` from the receiver. Returns the removed value or `nil` if
+    /// `key` was unset.
     public func removeValueForKey(key: Key) -> Value? {
         return remove(key, key.startIndex)
     }
 
+    /// Returns the value for `key` if contained in the receiver, `nil` otherwise.
     public func lookup(key: Key) -> Value? {
         return lookup(key, key.startIndex)
     }
 
+    /// Inserts `value` into the receiver for the given `key`.
     public func insert(key: Key, _ value: Value) {
         update(key, key.startIndex, value)
     }
 
+    /// Removes value at `key` from the receiver.
     public func remove(key: Key) {
         remove(key, key.startIndex)
     }
+
+    /// MARK: Private
 
     private func lookup(key: Key, _ index: Key.Index) -> Value? {
         if index == key.endIndex {
@@ -51,6 +55,7 @@ public final class Trie<Key: ExtensibleCollectionType, Value where Key.Generator
             return child?.lookup(key, index.successor())
         }
     }
+
     private func update(key: Key, _ index: Key.Index, _ value: Value?) -> Value? {
         if index == key.endIndex {
             return replaceValue(value)
@@ -78,7 +83,18 @@ public final class Trie<Key: ExtensibleCollectionType, Value where Key.Generator
         self.value = value
         return previous
     }
+
+    /// Individual element in the key sequenc for mapping to child `Trie`s
+    private typealias Atom = Key.Generator.Element
+
+    /// Value of the node in the `Trie`
+    private var value: Value? = nil
+
+    /// Children that share a common prefix
+    private var children: [Atom: Trie] = [:]
 }
+
+// MARK: DictionaryLiteralConvertible
 
 extension Trie : DictionaryLiteralConvertible {
     public convenience init(dictionaryLiteral elements: (Key, Value)...) {
@@ -88,6 +104,8 @@ extension Trie : DictionaryLiteralConvertible {
         }
     }
 }
+
+// MARK: SequenceType
 
 extension Trie : SequenceType {
     private typealias Generator = GeneratorOf<(Key, Value)>
