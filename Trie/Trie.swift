@@ -14,10 +14,13 @@ public final class Trie<T> {
     }
 
     public func lookup(key: String) -> T? {
-        if let c = first(key) {
-            return lookup(key[key.startIndex.successor()..<key.endIndex])
+        if key.isEmpty {
+            return value
         }
-        return value
+
+        let child = children[first(key)!]
+        let subkey = key[key.startIndex.successor()..<key.endIndex]
+        return child?.lookup(subkey) ?? nil
     }
 
     public func insert(key: String, _ value: T) {
