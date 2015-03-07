@@ -57,3 +57,12 @@ public final class Trie<K: CollectionType, V where K.Generator.Element: Hashable
         }
     }
 }
+
+extension Trie : DictionaryLiteralConvertible {
+    public convenience init(dictionaryLiteral elements: (K, V)...) {
+        self.init()
+        for (key, value) in elements {
+            insert(key, key.startIndex, value)
+        }
+    }
+}

@@ -60,4 +60,13 @@ final class TrieTests: XCTestCase {
         assertEqual(trie.lookup("abra"), 5)
         assertEqual(trie.lookup("asdf"), 2)
     }
+
+    func testDictionaryLiteral() {
+        let trie: Trie<String, Int> = [ "a": 1, "b": 2, "c": 3 ]
+
+        assertEqual(trie.lookup("a"), 1)
+        assertEqual(trie.lookup("b"), 2)
+        assertEqual(trie.lookup("c"), 3)
+        assertEqual(trie.lookup("d"), nil)
+    }
 }
