@@ -69,4 +69,14 @@ final class TrieTests: XCTestCase {
         assertEqual(trie.value("c"), 3)
         assertEqual(trie.value("d"), nil)
     }
+
+    func testSubscript() {
+        let trie = Trie<String, Int>()
+
+        trie["abc"] = 123
+        assertEqual(trie["abc"], 123)
+
+        trie["abc"] = nil
+        assertEqual(trie["abc"], nil)
+    }
 }

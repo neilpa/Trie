@@ -20,8 +20,8 @@ public final class Trie<Key: ExtensibleCollectionType, Value where Key.Generator
     public subscript(key: Key) -> Value? {
         get {
             return value(key, key.startIndex)
-        } set {
-            update(key, key.startIndex, value)
+        } set(newValue) {
+            update(key, key.startIndex, newValue)
         }
     }
 
