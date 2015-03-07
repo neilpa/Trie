@@ -93,10 +93,10 @@ extension Trie : SequenceType {
     private typealias Generator = GeneratorOf<(Key, Value)>
 
     public func generate() -> Generator {
-        return Trie.generate(self, prefix: Key())
+        return Trie.generate(self, stem: Key())
     }
 
-    private static func generate(trie: Trie, prefix: Key) -> Generator {
+    private static func generate(trie: Trie, stem: Key) -> Generator {
         var generator: Dictionary<Atom, Trie>.Generator?
         var nestedGenerator: Generator?
 
@@ -104,7 +104,7 @@ extension Trie : SequenceType {
             if generator == nil {
                 generator = trie.children.generate()
                 if let value = trie.value {
-                    return (prefix, value)
+                    return (stem, value)
                 }
             }
 
@@ -116,10 +116,10 @@ extension Trie : SequenceType {
 
             if let (atom, child) = generator!.next() {
                 var key = Key()
-                key.extend(prefix)
+                key.extend(stem)
                 key.append(atom)
 
-                nestedGenerator = Trie.generate(child, prefix: key)
+                nestedGenerator = Trie.generate(child, stem: key)
             }
 
             return nestedGenerator?.next()
