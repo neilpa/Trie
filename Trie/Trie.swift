@@ -6,9 +6,12 @@
 //  Copyright (c) 2015 Neil Pankey. All rights reserved.
 //
 
-public struct Trie<T> {
+public final class Trie<T> {
     private var value: T? = nil
     private var children: [Character:Trie<T>] = [:]
+
+    public init() {
+    }
 
     public func lookup(key: String) -> T? {
         if let c = first(key) {
@@ -17,7 +20,7 @@ public struct Trie<T> {
         return value
     }
 
-    public mutating func insert(key: String, _ value: T) {
+    public func insert(key: String, _ value: T) {
         if let c = first(key) {
             let subkey = key[key.startIndex.successor()..<key.endIndex]
             if var child = children[c] {
@@ -32,7 +35,7 @@ public struct Trie<T> {
         }
     }
 
-    public mutating func remove(key: String) {
+    public func remove(key: String) {
         if let c = first(key) {
             if var child = children[c] {
                 child.remove(key[key.startIndex.successor()..<key.endIndex])
