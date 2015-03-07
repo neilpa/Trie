@@ -96,8 +96,8 @@ extension Trie : SequenceType {
         return Trie.generate(self, prefix: Key())
     }
 
-    private static func generate(trie: Trie<Key, Value>, prefix: Key) -> Generator {
-        var generator: Dictionary<Atom, Trie<Key, Value>>.Generator?
+    private static func generate(trie: Trie, prefix: Key) -> Generator {
+        var generator: Dictionary<Atom, Trie>.Generator?
         var nestedGenerator: Generator?
 
         return Generator {
