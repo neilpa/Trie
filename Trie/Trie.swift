@@ -15,8 +15,32 @@ public final class Trie<Key: ExtensibleCollectionType, Value where Key.Generator
     public init() {
     }
 
+    public subscript(key: Key) -> Value? {
+        get {
+            return lookup(key, key.startIndex)
+        } set {
+            update(key, key.startIndex, value)
+        }
+    }
+
+    public func updateValue(value: Value, forKey key: Key) -> Value? {
+        return update(key, key.startIndex, value)
+    }
+
+    public func removeValueForKey(key: Key) -> Value? {
+        return remove(key, key.startIndex)
+    }
+
     public func lookup(key: Key) -> Value? {
         return lookup(key, key.startIndex)
+    }
+
+    public func insert(key: Key, _ value: Value) {
+        update(key, key.startIndex, value)
+    }
+
+    public func remove(key: Key) {
+        remove(key, key.startIndex)
     }
 
     private func lookup(key: Key, _ index: Key.Index) -> Value? {
@@ -27,36 +51,32 @@ public final class Trie<Key: ExtensibleCollectionType, Value where Key.Generator
             return child?.lookup(key, index.successor())
         }
     }
-
-    public func insert(key: Key, _ value: Value) {
-        insert(key, key.startIndex, value)
-    }
-
-    private func insert(key: Key, _ index: Key.Index, _ value: Value) {
+    private func update(key: Key, _ index: Key.Index, _ value: Value?) -> Value? {
         if index == key.endIndex {
-            self.value = value
-        } else {
-            var child = children[key[index]]
-            if child == nil {
-                child = Trie()
-                children[key[index]] = child
-            }
-            child!.insert(key, index.successor(), value)
+            return replaceValue(value)
         }
+
+        var child = children[key[index]]
+        if child == nil {
+            child = Trie()
+            children[key[index]] = child
+        }
+        return child!.update(key, index.successor(), value)
     }
 
-    public func remove(key: Key) {
-        remove(key, key.startIndex)
-    }
-
-    private func remove(key: Key, _ index: Key.Index) {
+    private func remove(key: Key, _ index: Key.Index) -> Value? {
         if index == key.endIndex {
-            value = nil
-        } else {
-            // TODO Error if the key doesn't exist?
-            let child = children[key[index]]
-            child?.remove(key, index.successor())
+            return replaceValue(nil)
         }
+
+        let child = children[key[index]]
+        return child?.remove(key, index.successor())
+    }
+
+    private func replaceValue(value: Value?) -> Value? {
+        let previous = self.value
+        self.value = value
+        return previous
     }
 }
 
@@ -64,7 +84,7 @@ extension Trie : DictionaryLiteralConvertible {
     public convenience init(dictionaryLiteral elements: (Key, Value)...) {
         self.init()
         for (key, value) in elements {
-            insert(key, key.startIndex, value)
+            update(key, key.startIndex, value)
         }
     }
 }
