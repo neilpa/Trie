@@ -19,19 +19,17 @@ public final class Trie<T> {
         }
 
         let child = children[first(key)!]
-        let subkey = key[key.startIndex.successor()..<key.endIndex]
-        return child?.lookup(subkey) ?? nil
+        return child?.lookup(dropFirst(key)) ?? nil
     }
 
     public func insert(key: String, _ value: T) {
         if let c = first(key) {
-            let subkey = key[key.startIndex.successor()..<key.endIndex]
             if var child = children[c] {
-                child.insert(subkey, value)
+                child.insert(dropFirst(key), value)
             } else {
                 var child = Trie()
                 children[c] = child
-                child.insert(subkey, value)
+                child.insert(dropFirst(key), value)
             }
         } else {
             self.value = value
@@ -41,7 +39,7 @@ public final class Trie<T> {
     public func remove(key: String) {
         if let c = first(key) {
             if var child = children[c] {
-                child.remove(key[key.startIndex.successor()..<key.endIndex])
+                child.remove(dropFirst(key))
             }
             // TODO Error if the key doesn't exist?
         } else {
