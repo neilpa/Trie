@@ -11,6 +11,8 @@
 		D87BA88A1AAA8B9E0057CF91 /* Trie.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D87BA87B1AAA8B9E0057CF91 /* Trie.framework */; };
 		D87BA8911AAA8B9E0057CF91 /* TrieTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D87BA8901AAA8B9E0057CF91 /* TrieTests.swift */; };
 		D87BA89B1AAA8BD20057CF91 /* Trie.swift in Sources */ = {isa = PBXBuildFile; fileRef = D87BA89A1AAA8BD20057CF91 /* Trie.swift */; };
+		D8EB27D61AAAAC6E0014D965 /* Assertions.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D8EB27D51AAAAC6E0014D965 /* Assertions.framework */; };
+		D8EB27D91AAAACB70014D965 /* Assertions.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = D8EB27D51AAAAC6E0014D965 /* Assertions.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -23,6 +25,19 @@
 		};
 /* End PBXContainerItemProxy section */
 
+/* Begin PBXCopyFilesBuildPhase section */
+		D8EB27D81AAAACAB0014D965 /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 16;
+			files = (
+				D8EB27D91AAAACB70014D965 /* Assertions.framework in CopyFiles */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
 /* Begin PBXFileReference section */
 		D87BA87B1AAA8B9E0057CF91 /* Trie.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Trie.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		D87BA87F1AAA8B9E0057CF91 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -31,6 +46,7 @@
 		D87BA88F1AAA8B9E0057CF91 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		D87BA8901AAA8B9E0057CF91 /* TrieTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrieTests.swift; sourceTree = "<group>"; };
 		D87BA89A1AAA8BD20057CF91 /* Trie.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Trie.swift; sourceTree = "<group>"; };
+		D8EB27D51AAAAC6E0014D965 /* Assertions.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Assertions.framework; path = Carthage/Build/Mac/Assertions.framework; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -45,6 +61,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D8EB27D61AAAAC6E0014D965 /* Assertions.framework in Frameworks */,
 				D87BA88A1AAA8B9E0057CF91 /* Trie.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -58,6 +75,7 @@
 				D87BA87D1AAA8B9E0057CF91 /* Trie */,
 				D87BA88D1AAA8B9E0057CF91 /* TrieTests */,
 				D87BA87C1AAA8B9E0057CF91 /* Products */,
+				D8EB27D71AAAAC760014D965 /* External */,
 			);
 			sourceTree = "<group>";
 		};
@@ -105,6 +123,14 @@
 			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
+		D8EB27D71AAAAC760014D965 /* External */ = {
+			isa = PBXGroup;
+			children = (
+				D8EB27D51AAAAC6E0014D965 /* Assertions.framework */,
+			);
+			name = External;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXHeadersBuildPhase section */
@@ -144,6 +170,7 @@
 				D87BA8851AAA8B9E0057CF91 /* Sources */,
 				D87BA8861AAA8B9E0057CF91 /* Frameworks */,
 				D87BA8871AAA8B9E0057CF91 /* Resources */,
+				D8EB27D81AAAACAB0014D965 /* CopyFiles */,
 			);
 			buildRules = (
 			);
@@ -363,6 +390,7 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(DEVELOPER_FRAMEWORKS_DIR)",
 					"$(inherited)",
+					"$(PROJECT_DIR)/Carthage/Build/Mac",
 				);
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"DEBUG=1",
@@ -382,6 +410,7 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(DEVELOPER_FRAMEWORKS_DIR)",
 					"$(inherited)",
+					"$(PROJECT_DIR)/Carthage/Build/Mac",
 				);
 				INFOPLIST_FILE = TrieTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
@@ -408,6 +437,7 @@
 				D87BA8961AAA8B9E0057CF91 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		D87BA8971AAA8B9E0057CF91 /* Build configuration list for PBXNativeTarget "TrieTests" */ = {
 			isa = XCConfigurationList;
@@ -416,6 +446,7 @@
 				D87BA8991AAA8B9E0057CF91 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
