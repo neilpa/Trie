@@ -6,9 +6,11 @@
 //  Copyright (c) 2015 Neil Pankey. All rights reserved.
 //
 
-public final class Trie<K: CollectionType, V where K.Generator.Element: Hashable> {
+public final class Trie<K: ExtensibleCollectionType, V where K.Generator.Element: Hashable> {
+    private typealias Atom = K.Generator.Element
+
     private var value: V? = nil
-    private var children: [K.Generator.Element: Trie<K, V>] = [:]
+    private var children: [Atom: Trie<K, V>] = [:]
 
     public init() {
     }
@@ -63,6 +65,44 @@ extension Trie : DictionaryLiteralConvertible {
         self.init()
         for (key, value) in elements {
             insert(key, key.startIndex, value)
+        }
+    }
+}
+
+extension Trie : SequenceType {
+    private typealias Generator = GeneratorOf<(K, V)>
+
+    public func generate() -> Generator {
+        return Trie.generate(self, prefix: K())
+    }
+
+    private static func generate(trie: Trie<K, V>, prefix: K) -> Generator {
+        var generator: Dictionary<Atom, Trie<K, V>>.Generator?
+        var nestedGenerator: Generator?
+
+        return Generator {
+            if generator == nil {
+                generator = trie.children.generate()
+                if let value = trie.value {
+                    return (prefix, value)
+                }
+            }
+
+            if let element = nestedGenerator?.next() {
+                return element
+            } else {
+                nestedGenerator = nil
+            }
+
+            if let (atom, child) = generator!.next() {
+                var key = K()
+                key.extend(prefix)
+                key.append(atom)
+
+                nestedGenerator = Trie.generate(child, prefix: key)
+            }
+
+            return nestedGenerator?.next()
         }
     }
 }
