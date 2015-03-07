@@ -9,11 +9,11 @@ final class TrieTests: XCTestCase {
 
     func testvalue() {
         let trie = Trie<String, Bool>()
-        assertEqual(trie.value("foo"), nil)
+        assertNil(trie.value("foo"))
 
         trie.insert("", true)
         assertEqual(trie.value(""), true)
-        assertEqual(trie.value("bar"), nil)
+        assertNil(trie.value("bar"))
 
         trie.insert("asdf", false)
         assertEqual(trie.value("asdf"), false)
@@ -31,7 +31,8 @@ final class TrieTests: XCTestCase {
         trie.insert("bar",  7)
         trie.insert("baz",  8)
 
-        assertEqual(trie.value(""),     nil)
+        assertNil(trie.value(""))
+
         assertEqual(trie.value("a"),    1)
         assertEqual(trie.value("asdf"), 2)
         assertEqual(trie.value("aaa"),  3)
@@ -52,11 +53,11 @@ final class TrieTests: XCTestCase {
         trie.insert("abra", 5)
 
         trie.remove("a")
-        assertEqual(trie.value("a"),   nil)
+        assertNil(trie.value("a"))
         assertEqual(trie.value("aaa"), 3)
 
         trie.remove("abc")
-        assertEqual(trie.value("abc"),  nil)
+        assertNil(trie.value("abc"))
         assertEqual(trie.value("abra"), 5)
         assertEqual(trie.value("asdf"), 2)
     }
@@ -67,7 +68,7 @@ final class TrieTests: XCTestCase {
         assertEqual(trie.value("a"), 1)
         assertEqual(trie.value("b"), 2)
         assertEqual(trie.value("c"), 3)
-        assertEqual(trie.value("d"), nil)
+        assertNil(trie.value("d"))
     }
 
     func testSubscript() {
@@ -77,6 +78,6 @@ final class TrieTests: XCTestCase {
         assertEqual(trie["abc"], 123)
 
         trie["abc"] = nil
-        assertEqual(trie["abc"], nil)
+        assertNil(trie["abc"])
     }
 }
