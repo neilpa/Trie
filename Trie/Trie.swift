@@ -6,20 +6,20 @@
 //  Copyright (c) 2015 Neil Pankey. All rights reserved.
 //
 
-public final class Trie<K: ExtensibleCollectionType, V where K.Generator.Element: Hashable> {
-    private typealias Atom = K.Generator.Element
+public final class Trie<Key: ExtensibleCollectionType, Value where Key.Generator.Element: Hashable> {
+    private typealias Atom = Key.Generator.Element
 
-    private var value: V? = nil
-    private var children: [Atom: Trie<K, V>] = [:]
+    private var value: Value? = nil
+    private var children: [Atom: Trie] = [:]
 
     public init() {
     }
 
-    public func lookup(key: K) -> V? {
+    public func lookup(key: Key) -> Value? {
         return lookup(key, key.startIndex)
     }
 
-    private func lookup(key: K, _ index: K.Index) -> V? {
+    private func lookup(key: Key, _ index: Key.Index) -> Value? {
         if index == key.endIndex {
             return value
         } else {
@@ -28,11 +28,11 @@ public final class Trie<K: ExtensibleCollectionType, V where K.Generator.Element
         }
     }
 
-    public func insert(key: K, _ value: V) {
+    public func insert(key: Key, _ value: Value) {
         insert(key, key.startIndex, value)
     }
 
-    private func insert(key: K, _ index: K.Index, _ value: V) {
+    private func insert(key: Key, _ index: Key.Index, _ value: Value) {
         if index == key.endIndex {
             self.value = value
         } else {
@@ -45,11 +45,11 @@ public final class Trie<K: ExtensibleCollectionType, V where K.Generator.Element
         }
     }
 
-    public func remove(key: K) {
+    public func remove(key: Key) {
         remove(key, key.startIndex)
     }
 
-    private func remove(key: K, _ index: K.Index) {
+    private func remove(key: Key, _ index: Key.Index) {
         if index == key.endIndex {
             value = nil
         } else {
@@ -61,7 +61,7 @@ public final class Trie<K: ExtensibleCollectionType, V where K.Generator.Element
 }
 
 extension Trie : DictionaryLiteralConvertible {
-    public convenience init(dictionaryLiteral elements: (K, V)...) {
+    public convenience init(dictionaryLiteral elements: (Key, Value)...) {
         self.init()
         for (key, value) in elements {
             insert(key, key.startIndex, value)
@@ -70,14 +70,14 @@ extension Trie : DictionaryLiteralConvertible {
 }
 
 extension Trie : SequenceType {
-    private typealias Generator = GeneratorOf<(K, V)>
+    private typealias Generator = GeneratorOf<(Key, Value)>
 
     public func generate() -> Generator {
-        return Trie.generate(self, prefix: K())
+        return Trie.generate(self, prefix: Key())
     }
 
-    private static func generate(trie: Trie<K, V>, prefix: K) -> Generator {
-        var generator: Dictionary<Atom, Trie<K, V>>.Generator?
+    private static func generate(trie: Trie<Key, Value>, prefix: Key) -> Generator {
+        var generator: Dictionary<Atom, Trie<Key, Value>>.Generator?
         var nestedGenerator: Generator?
 
         return Generator {
@@ -95,7 +95,7 @@ extension Trie : SequenceType {
             }
 
             if let (atom, child) = generator!.next() {
-                var key = K()
+                var key = Key()
                 key.extend(prefix)
                 key.append(atom)
 
