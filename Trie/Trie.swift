@@ -4,8 +4,15 @@
 public final class Trie<Key: ExtensibleCollectionType, Value where Key.Generator.Element: Hashable> {
     // MARK: Constructors
 
-    /// Constructs an empty `Trie`
+    /// Constructs an empty `Trie`.
     public init() {
+    }
+
+    /// Constructs a `Trie` with a `sequence` of key/value pairs.
+    public init<S: SequenceType where S.Generator.Element == (Key, Value)>(sequence: S) {
+        for (key, value) in sequence {
+            self.insert(key, value)
+        }
     }
 
     // MARK: Dictionary primitives
@@ -84,13 +91,13 @@ public final class Trie<Key: ExtensibleCollectionType, Value where Key.Generator
         return previous
     }
 
-    /// Individual element in the key sequenc for mapping to child `Trie`s
+    /// Individual element in the key sequence for mapping to child `Trie`s.
     private typealias Atom = Key.Generator.Element
 
-    /// Value of the node in the `Trie`
+    /// Value of the node in the `Trie`.
     private var value: Value? = nil
 
-    /// Children that share a common prefix
+    /// Children that share a common prefix.
     private var children: [Atom: Trie] = [:]
 }
 
@@ -98,10 +105,7 @@ public final class Trie<Key: ExtensibleCollectionType, Value where Key.Generator
 
 extension Trie : DictionaryLiteralConvertible {
     public convenience init(dictionaryLiteral elements: (Key, Value)...) {
-        self.init()
-        for (key, value) in elements {
-            update(key, key.startIndex, value)
-        }
+        self.init(sequence: elements)
     }
 }
 
