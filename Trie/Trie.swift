@@ -11,11 +11,25 @@ public struct Trie<T> {
     private var children: [Character:Trie<T>] = [:]
 
     public func lookup(key: String) -> T? {
-        return nil
+        if let c = first(key) {
+            return lookup(key[key.startIndex.successor()..<key.endIndex])
+        }
+        return value
     }
 
     public mutating func insert(key: String, _ value: T) {
-
+        if let c = first(key) {
+            let subkey = key[key.startIndex.successor()..<key.endIndex]
+            if var child = children[c] {
+                child.insert(subkey, value)
+            } else {
+                var child = Trie()
+                children[c] = child
+                child.insert(subkey, value)
+            }
+        } else {
+            self.value = value
+        }
     }
 
     public mutating func remove(key: String) {
