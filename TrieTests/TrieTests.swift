@@ -41,4 +41,23 @@ final class TrieTests: XCTestCase {
         assertEqual(trie.lookup("bar"),  7)
         assertEqual(trie.lookup("baz"),  8)
     }
+
+    func testRemove() {
+        let trie = Trie<Int>()
+
+        trie.insert("a",    1)
+        trie.insert("asdf", 2)
+        trie.insert("aaa",  3)
+        trie.insert("abc",  4)
+        trie.insert("abra", 5)
+
+        trie.remove("a")
+        assertEqual(trie.lookup("a"),   nil)
+        assertEqual(trie.lookup("aaa"), 3)
+
+        trie.remove("abc")
+        assertEqual(trie.lookup("abc"),  nil)
+        assertEqual(trie.lookup("abra"), 5)
+        assertEqual(trie.lookup("asdf"), 2)
+    }
 }
