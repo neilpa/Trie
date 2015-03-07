@@ -7,16 +7,16 @@ import XCTest
 
 final class TrieTests: XCTestCase {
 
-    func testLookup() {
+    func testvalue() {
         let trie = Trie<String, Bool>()
-        assertEqual(trie.lookup("foo"), nil)
+        assertEqual(trie.value("foo"), nil)
 
         trie.insert("", true)
-        assertEqual(trie.lookup(""), true)
-        assertEqual(trie.lookup("bar"), nil)
+        assertEqual(trie.value(""), true)
+        assertEqual(trie.value("bar"), nil)
 
         trie.insert("asdf", false)
-        assertEqual(trie.lookup("asdf"), false)
+        assertEqual(trie.value("asdf"), false)
     }
 
     func testInsert() {
@@ -31,15 +31,15 @@ final class TrieTests: XCTestCase {
         trie.insert("bar",  7)
         trie.insert("baz",  8)
 
-        assertEqual(trie.lookup(""),     nil)
-        assertEqual(trie.lookup("a"),    1)
-        assertEqual(trie.lookup("asdf"), 2)
-        assertEqual(trie.lookup("aaa"),  3)
-        assertEqual(trie.lookup("abc"),  4)
-        assertEqual(trie.lookup("abra"), 5)
-        assertEqual(trie.lookup("able"), 6)
-        assertEqual(trie.lookup("bar"),  7)
-        assertEqual(trie.lookup("baz"),  8)
+        assertEqual(trie.value(""),     nil)
+        assertEqual(trie.value("a"),    1)
+        assertEqual(trie.value("asdf"), 2)
+        assertEqual(trie.value("aaa"),  3)
+        assertEqual(trie.value("abc"),  4)
+        assertEqual(trie.value("abra"), 5)
+        assertEqual(trie.value("able"), 6)
+        assertEqual(trie.value("bar"),  7)
+        assertEqual(trie.value("baz"),  8)
     }
 
     func testRemove() {
@@ -52,21 +52,21 @@ final class TrieTests: XCTestCase {
         trie.insert("abra", 5)
 
         trie.remove("a")
-        assertEqual(trie.lookup("a"),   nil)
-        assertEqual(trie.lookup("aaa"), 3)
+        assertEqual(trie.value("a"),   nil)
+        assertEqual(trie.value("aaa"), 3)
 
         trie.remove("abc")
-        assertEqual(trie.lookup("abc"),  nil)
-        assertEqual(trie.lookup("abra"), 5)
-        assertEqual(trie.lookup("asdf"), 2)
+        assertEqual(trie.value("abc"),  nil)
+        assertEqual(trie.value("abra"), 5)
+        assertEqual(trie.value("asdf"), 2)
     }
 
     func testDictionaryLiteral() {
         let trie: Trie<String, Int> = [ "a": 1, "b": 2, "c": 3 ]
 
-        assertEqual(trie.lookup("a"), 1)
-        assertEqual(trie.lookup("b"), 2)
-        assertEqual(trie.lookup("c"), 3)
-        assertEqual(trie.lookup("d"), nil)
+        assertEqual(trie.value("a"), 1)
+        assertEqual(trie.value("b"), 2)
+        assertEqual(trie.value("c"), 3)
+        assertEqual(trie.value("d"), nil)
     }
 }

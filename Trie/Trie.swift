@@ -12,7 +12,7 @@ public final class Trie<Key: ExtensibleCollectionType, Value where Key.Generator
 
     public subscript(key: Key) -> Value? {
         get {
-            return lookup(key, key.startIndex)
+            return value(key, key.startIndex)
         } set {
             update(key, key.startIndex, value)
         }
@@ -31,8 +31,8 @@ public final class Trie<Key: ExtensibleCollectionType, Value where Key.Generator
     }
 
     /// Returns the value for `key` if contained in the receiver, `nil` otherwise.
-    public func lookup(key: Key) -> Value? {
-        return lookup(key, key.startIndex)
+    public func value(key: Key) -> Value? {
+        return value(key, key.startIndex)
     }
 
     /// Inserts `value` into the receiver for the given `key`.
@@ -47,12 +47,12 @@ public final class Trie<Key: ExtensibleCollectionType, Value where Key.Generator
 
     /// MARK: Private
 
-    private func lookup(key: Key, _ index: Key.Index) -> Value? {
+    private func value(key: Key, _ index: Key.Index) -> Value? {
         if index == key.endIndex {
             return value
         } else {
             let child = children[key[index]]
-            return child?.lookup(key, index.successor())
+            return child?.value(key, index.successor())
         }
     }
 
