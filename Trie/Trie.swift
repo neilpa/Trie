@@ -33,6 +33,13 @@ public struct Trie<T> {
     }
 
     public mutating func remove(key: String) {
-
+        if let c = first(key) {
+            if var child = children[c] {
+                child.remove(key[key.startIndex.successor()..<key.endIndex])
+            }
+            // TODO Error if the key doesn't exist?
+        } else {
+            value = nil
+        }
     }
 }
