@@ -8,7 +8,7 @@ import XCTest
 final class TrieTests: XCTestCase {
 
     func testLookup() {
-        let trie = Trie<Bool>()
+        let trie = Trie<String, Bool>()
         assertEqual(trie.lookup("foo"), nil)
 
         trie.insert("", true)
@@ -20,7 +20,7 @@ final class TrieTests: XCTestCase {
     }
 
     func testInsert() {
-        let trie = Trie<Int>()
+        let trie = Trie<String, Int>()
 
         trie.insert("a",    1)
         trie.insert("asdf", 2)
@@ -43,7 +43,7 @@ final class TrieTests: XCTestCase {
     }
 
     func testRemove() {
-        let trie = Trie<Int>()
+        let trie = Trie<String, Int>()
 
         trie.insert("a",    1)
         trie.insert("asdf", 2)
