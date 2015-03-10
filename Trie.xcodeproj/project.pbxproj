@@ -12,6 +12,7 @@
 		D87BA8911AAA8B9E0057CF91 /* TrieTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D87BA8901AAA8B9E0057CF91 /* TrieTests.swift */; };
 		D87BA89B1AAA8BD20057CF91 /* Trie.swift in Sources */ = {isa = PBXBuildFile; fileRef = D87BA89A1AAA8BD20057CF91 /* Trie.swift */; };
 		D8D23ECE1AAEB10200CA090E /* Sequence.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8D23ECD1AAEB10200CA090E /* Sequence.swift */; };
+		D8D23ED01AAEB27500CA090E /* TreeType.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8D23ECF1AAEB27500CA090E /* TreeType.swift */; };
 		D8EB27D61AAAAC6E0014D965 /* Assertions.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D8EB27D51AAAAC6E0014D965 /* Assertions.framework */; };
 		D8EB27D91AAAACB70014D965 /* Assertions.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = D8EB27D51AAAAC6E0014D965 /* Assertions.framework */; };
 /* End PBXBuildFile section */
@@ -48,6 +49,7 @@
 		D87BA8901AAA8B9E0057CF91 /* TrieTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrieTests.swift; sourceTree = "<group>"; };
 		D87BA89A1AAA8BD20057CF91 /* Trie.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Trie.swift; sourceTree = "<group>"; };
 		D8D23ECD1AAEB10200CA090E /* Sequence.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Sequence.swift; sourceTree = "<group>"; };
+		D8D23ECF1AAEB27500CA090E /* TreeType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TreeType.swift; sourceTree = "<group>"; };
 		D8EB27D51AAAAC6E0014D965 /* Assertions.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Assertions.framework; path = Carthage/Build/Mac/Assertions.framework; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -95,6 +97,7 @@
 			children = (
 				D8D23ECD1AAEB10200CA090E /* Sequence.swift */,
 				D87BA89A1AAA8BD20057CF91 /* Trie.swift */,
+				D8D23ECF1AAEB27500CA090E /* TreeType.swift */,
 				D87BA87E1AAA8B9E0057CF91 /* Supporting Files */,
 			);
 			path = Trie;
@@ -243,6 +246,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				D8D23ECE1AAEB10200CA090E /* Sequence.swift in Sources */,
+				D8D23ED01AAEB27500CA090E /* TreeType.swift in Sources */,
 				D87BA89B1AAA8BD20057CF91 /* Trie.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
