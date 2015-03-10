@@ -109,70 +109,37 @@ extension Trie : DictionaryLiteralConvertible {
     }
 }
 
-// MARK: SequenceType
+// MARK: Traversal
 
-public struct TrieGenerator<Key: ExtensibleCollectionType, Value where Key.Generator.Element: Hashable> : GeneratorType {
-    private let node: Trie<Key, Value>
-    private let stem: Key
-
-    private var children: Dictionary<Key.Generator.Element, Trie<Key, Value>>.Generator
-
-    public init(node: Trie<Key, Value>) {
-        self.init(node, Key())
-    }
-
-    private init(_ node: Trie<Key, Value>, _ stem: Key) {
-        self.node = node
-        self.stem = stem
-
-        children = node.children.generate()
-    }
-
-    public mutating func next() -> TrieGenerator? {
-        if let (atom, child) = children.next() {
-            var key = Key()
-            key.extend(stem)
-            key.append(atom)
-            return TrieGenerator(child, key)
-        }
-        return nil
+extension Trie {
+    // TODO Ideally this should be SequenceOf<(Key, Value)>
+    public func breadthFirst() -> [(Key, Value)] {
+        let seq = GeneratorSequence(TrieGenerator(root: self))
+        return filter(seq) { $1 != nil }.map { ($0, $1!) }
     }
 }
 
-extension Trie : SequenceType {
-    private typealias Generator = GeneratorOf<(Key, Value)>
+private struct TrieGenerator<Key: ExtensibleCollectionType, Value where Key.Generator.Element: Hashable> : GeneratorType {
+    private var nodes: [(Key, Trie<Key, Value>)] = []
 
-    public func generate() -> Generator {
-        return Trie.generate(self, stem: Key())
+    private init(root: Trie<Key, Value>) {
+        nodes = [(Key(), root)]
     }
 
-    private static func generate(trie: Trie, stem: Key) -> Generator {
-        var generator: Dictionary<Atom, Trie>.Generator?
-        var nestedGenerator: Generator?
+    private mutating func next() -> (Key, Value?)? {
+        if let (stem, node) = nodes.first {
+            nodes.removeAtIndex(0)
 
-        return Generator {
-            if generator == nil {
-                generator = trie.children.generate()
-                if let value = trie.value {
-                    return (stem, value)
-                }
-            }
-
-            if let element = nestedGenerator?.next() {
-                return element
-            } else {
-                nestedGenerator = nil
-            }
-
-            if let (atom, child) = generator!.next() {
+            // TODO This could be even lazier if we queued up (key, value, generator)
+            nodes.extend(map(node.children) { atom, child in
                 var key = Key()
                 key.extend(stem)
                 key.append(atom)
+                return (key, child)
+            })
 
-                nestedGenerator = Trie.generate(child, stem: key)
-            }
-
-            return nestedGenerator?.next()
+            return (stem, node.value)
         }
+        return nil
     }
 }
