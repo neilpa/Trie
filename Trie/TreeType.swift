@@ -10,26 +10,39 @@ public protocol TreeType {
     var nodes: SequenceOf<Self>? { get }
 }
 
-public struct BreadthFirstGenerator<T: TreeType> : GeneratorType {
-    private var nodes: [T]
+public func breadthFirst<T: TreeType>(tree: T) -> SequenceOf<T> {
+    return SequenceOf<T> { () -> GeneratorOf<T> in
+        var nodes = [tree]
 
-    public init(root: T) {
-        nodes = [root]
-    }
-
-    public mutating func next() -> T? {
-        if let node = nodes.first {
-            if let children = node.nodes {
-                nodes.extend(children)
+        return GeneratorOf {
+            if let node = nodes.first {
+                if let children = node.nodes {
+                    nodes.extend(children)
+                }
+                return nodes.removeAtIndex(0)
             }
-            return nodes.removeAtIndex(0)
+            return nil
         }
-        return nil
     }
 }
 
-public func breadthFirst<T: TreeType>(tree: T) -> SequenceOf<T> {
-    return SequenceOf {
-        return BreadthFirstGenerator(root: tree)
+public func combineWithParent<T: TreeType, U>(tree: T, initial: U, combine: (U, T) -> U) -> SequenceOf<U> {
+    return SequenceOf<U> { () -> GeneratorOf<U> in
+        var queue = [(combine(initial, tree), tree)]
+
+        return GeneratorOf {
+            if let (current, node) = queue.first {
+                queue.removeAtIndex(0)
+
+                if let children = node.nodes {
+                    queue.extend(map(children) { child in
+                        return (combine(current, child), child)
+                    })
+                }
+                return current
+            }
+
+            return nil
+        }
     }
 }
