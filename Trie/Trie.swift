@@ -111,6 +111,34 @@ extension Trie : DictionaryLiteralConvertible {
 
 // MARK: SequenceType
 
+public struct TrieGenerator<Key: ExtensibleCollectionType, Value where Key.Generator.Element: Hashable> : GeneratorType {
+    private let node: Trie<Key, Value>
+    private let stem: Key
+
+    private var children: Dictionary<Key.Generator.Element, Trie<Key, Value>>.Generator
+
+    public init(node: Trie<Key, Value>) {
+        self.init(node, Key())
+    }
+
+    private init(_ node: Trie<Key, Value>, _ stem: Key) {
+        self.node = node
+        self.stem = stem
+
+        children = node.children.generate()
+    }
+
+    public mutating func next() -> TrieGenerator? {
+        if let (atom, child) = children.next() {
+            var key = Key()
+            key.extend(stem)
+            key.append(atom)
+            return TrieGenerator(child, key)
+        }
+        return nil
+    }
+}
+
 extension Trie : SequenceType {
     private typealias Generator = GeneratorOf<(Key, Value)>
 
