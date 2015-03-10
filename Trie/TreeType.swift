@@ -2,11 +2,11 @@
 
 /// Generic tree protocol
 
-protocol TreeType {
+public protocol TreeType {
     typealias Nodes: SequenceType
-    typealias SubTree: TreeType = Nodes.Generator.Element
+    typealias Node: TreeType = Nodes.Generator.Element
     typealias Value
 
     var value: Value? { get }
-    func children() -> Nodes?
+    var nodes: Nodes? { get }
 }

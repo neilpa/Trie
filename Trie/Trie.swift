@@ -95,7 +95,7 @@ public final class Trie<Key: ExtensibleCollectionType, Value where Key.Generator
     private typealias Atom = Key.Generator.Element
 
     /// Value of the node in the `Trie`.
-    private var value: Value? = nil
+    private(set) public var value: Value? = nil
 
     /// Children that share a common prefix.
     private var children: [Atom: Trie] = [:]
@@ -138,5 +138,13 @@ private struct TrieGenerator<Key: ExtensibleCollectionType, Value where Key.Gene
             return (stem, node.value)
         }
         return nil
+    }
+}
+
+// MARK: TreeType
+
+extension Trie : TreeType {
+    public var nodes: Array<Trie<Key, Value>>? {
+        return children.values.array
     }
 }
