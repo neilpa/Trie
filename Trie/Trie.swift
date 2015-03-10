@@ -132,10 +132,7 @@ private struct TrieGenerator<Key: ExtensibleCollectionType, Value where Key.Gene
 
             // TODO This could be even lazier if we queued up (key, value, generator)
             nodes.extend(map(node.children) { atom, child in
-                var key = Key()
-                key.extend(stem)
-                key.append(atom)
-                return (key, child)
+                return (concat(stem, atom), child)
             })
 
             return (stem, node.value)
