@@ -144,7 +144,7 @@ private struct TrieGenerator<Key: ExtensibleCollectionType, Value where Key.Gene
 // MARK: TreeType
 
 extension Trie : TreeType {
-    public var nodes: Array<Trie<Key, Value>>? {
-        return children.values.array
+    public var nodes: SequenceOf<Trie<Key, Value>>? {
+        return SequenceOf(children.values)
     }
 }
