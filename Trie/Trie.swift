@@ -1,7 +1,7 @@
 //  Copyright (c) 2015 Neil Pankey. All rights reserved.
 
 /// A tree for effieciently storing keys and optional values where many keys share a prefix.
-public final class Trie<Key: ExtensibleCollectionType, Value where Key.Generator.Element: Hashable> {
+public final class Trie<Key: TrieKey, Value where Key.Generator.Element: Hashable> {
     // MARK: Constructors
 
     /// Constructs an empty `Trie`.
@@ -119,7 +119,7 @@ extension Trie {
     }
 }
 
-private struct TrieGenerator<Key: ExtensibleCollectionType, Value where Key.Generator.Element: Hashable> : GeneratorType {
+private struct TrieGenerator<Key: TrieKey, Value where Key.Generator.Element: Hashable> : GeneratorType {
     private var nodes: [(Key, Trie<Key, Value>)] = []
 
     private init(root: Trie<Key, Value>) {
@@ -148,3 +148,7 @@ extension Trie : TreeType {
         return SequenceOf(children.values)
     }
 }
+
+// MARK: TrieKey
+
+public typealias TrieKey = protocol<Sliceable, ExtensibleCollectionType, Comparable>
