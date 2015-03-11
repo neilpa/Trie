@@ -113,13 +113,18 @@ extension Trie : DictionaryLiteralConvertible {
 
 extension Trie {
     public func breadthFirst() -> [(Key, Value)] {
-        let seq = reduceWithParent(self, (Key(), nil)) { (current, parent) -> [((Key, Value?), Trie)] in
+        let seq = zipReduceWithParent(self, Key()) { (current, parent) -> [(Key, Trie)] in
             return map(parent.children) { atom, child in
-                let key: Key = concat(current.0, atom)
-                return ((key, child.value), child)
+                let key: Key = concat(current, atom)
+                return (key, child)
             }
         }
-        return filter(seq) { $1 != nil }.map { ($0, $1!) }
+
+        return filter(seq) { key, node in
+            node.value != nil
+        }.map { key, node in
+            (key, node.value!)
+        }
     }
 }
 
