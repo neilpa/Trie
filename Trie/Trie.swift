@@ -144,7 +144,7 @@ private struct TrieGenerator<Key: TrieKey, Value where Key.Generator.Element: Ha
 // MARK: TreeType
 
 extension Trie : TreeType {
-    public var nodes: SequenceOf<Trie<Key, Value>>? {
+    public var nodes: SequenceOf<Trie<Key, Value>> {
         return SequenceOf(children.values)
     }
 }
