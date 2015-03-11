@@ -2,6 +2,14 @@
 
 /// "Missing" sequence and related protocol functions
 
+// TODO Better name than `bisect` since that implies equal slices. Could use `split` but
+// but that would overload an existing stdlib function.
+public func bisect<S: Sliceable>(sequence: S, atIndex index: S.Index) -> (S.SubSlice, S.SubSlice) {
+    let head = sequence[sequence.startIndex..<index]
+    let tail = sequence[index..<sequence.endIndex]
+    return (head, tail)
+}
+
 public func concat<C: ExtensibleCollectionType>(prefix: C, element: C.Generator.Element) -> C {
     var result = C()
     result.extend(prefix)
