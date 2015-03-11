@@ -24,7 +24,7 @@ public func breadthFirst<T: TreeType>(tree: T) -> SequenceOf<T> {
     }
 }
 
-public func combineWithParent<T: TreeType, U, S: SequenceType where S.Generator.Element == (U, T)> (tree: T, initial: U, combine: (U, T) -> S) -> SequenceOf<U> {
+public func reduceWithParent<T: TreeType, U, S: SequenceType where S.Generator.Element == (U, T)> (tree: T, initial: U, combine: (U, T) -> S) -> SequenceOf<U> {
     return SequenceOf { () -> GeneratorOf<U> in
         var nodes = [(initial, tree)]
 
@@ -32,15 +32,16 @@ public func combineWithParent<T: TreeType, U, S: SequenceType where S.Generator.
             if let (current, node) = nodes.first {
                 nodes.removeAtIndex(0)
                 nodes.extend(combine(current, node))
-            }
 
+                return current
+            }
             return nil
         }
     }
 }
 
 public func combineWithParent<T: TreeType, U>(tree: T, initial: U, combine: (U, T) -> U) -> SequenceOf<U> {
-    return combineWithParent(tree, initial) { current, parent in
+    return reduceWithParent(tree, initial) { current, parent in
         return map(parent.nodes) { (combine(current, $0), $0) }
     }
 }

@@ -112,32 +112,14 @@ extension Trie : DictionaryLiteralConvertible {
 // MARK: Traversal
 
 extension Trie {
-    // TODO Ideally this should be SequenceOf<(Key, Value)>
     public func breadthFirst() -> [(Key, Value)] {
-        let seq = GeneratorSequence(TrieGenerator(root: self))
-        return filter(seq) { $1 != nil }.map { ($0, $1!) }
-    }
-}
-
-private struct TrieGenerator<Key: TrieKey, Value where Key.Generator.Element: Hashable> : GeneratorType {
-    private var nodes: [(Key, Trie<Key, Value>)] = []
-
-    private init(root: Trie<Key, Value>) {
-        nodes = [(Key(), root)]
-    }
-
-    private mutating func next() -> (Key, Value?)? {
-        if let (stem, node) = nodes.first {
-            nodes.removeAtIndex(0)
-
-            // TODO This could be even lazier if we queued up (key, value, generator)
-            nodes.extend(map(node.children) { atom, child in
-                return (concat(stem, atom), child)
-            })
-
-            return (stem, node.value)
+        let seq = reduceWithParent(self, (Key(), nil)) { (current, parent) -> [((Key, Value?), Trie)] in
+            return map(parent.children) { atom, child in
+                let key: Key = concat(current.0, atom)
+                return ((key, child.value), child)
+            }
         }
-        return nil
+        return filter(seq) { $1 != nil }.map { ($0, $1!) }
     }
 }
 
